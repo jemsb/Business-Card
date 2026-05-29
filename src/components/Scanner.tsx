@@ -75,6 +75,7 @@ export function Scanner({ onScanResult }: ScannerProps) {
 
   const startScan = async () => {
     setParseError('');
+    setScanStatus('Requesting camera access...');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: 'environment' }
@@ -91,7 +92,13 @@ export function Scanner({ onScanResult }: ScannerProps) {
       animationFrameId.current = requestAnimationFrame(scanLoop);
     } catch (err: any) {
       console.error(err);
-      setScanStatus('Camera permission denied or not available.');
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setScanStatus('PERMISSION_DENIED');
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        setScanStatus('CAMERA_NOT_FOUND');
+      } else {
+        setScanStatus(`ERROR: ${err.message || 'Could not start camera'}`);
+      }
     }
   };
 
@@ -163,43 +170,82 @@ export function Scanner({ onScanResult }: ScannerProps) {
           </div>
         )}
 
-        {/* Static State View */}
+        {/* Static State & Error Views */}
         {!isScanning && (
-          <div className="z-0 py-4 flex flex-col items-center gap-3">
-            <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500">
-              <Camera size={28} />
-            </div>
-            <p className="font-sans text-sm text-slate-500 px-4 max-w-xs leading-relaxed">
-              {scanStatus}
-            </p>
+          <div className="z-0 py-4 flex flex-col items-center gap-3 w-full max-w-md">
+            {scanStatus === 'PERMISSION_DENIED' ? (
+              <div className="text-center p-2">
+                <div className="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mx-auto mb-3">
+                  <Camera size={26} />
+                </div>
+                <h4 className="text-sm font-semibold text-slate-250 dark:text-slate-100 mb-1">Camera Permission Denied</h4>
+                <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed mb-4">
+                  The app doesn't have system permission to access your camera. Give this web view or browser camera access in your Android/device settings.
+                </p>
+                <div className="bg-slate-905 bg-[#0f172a]/90 text-left p-3.5 rounded-xl border border-slate-805 border-slate-800 text-[11px] font-mono leading-relaxed text-slate-300 max-h-[140px] overflow-y-auto shadow-inner select-all">
+                  <div className="text-emerald-400 font-semibold mb-1">// Capacitor prompt AndroidManifest.xml:</div>
+                  &lt;uses-permission android:name="android.permission.CAMERA" /&gt;<br/>
+                  &lt;uses-feature android:name="android.hardware.camera" android:required="false" /&gt;
+                </div>
+              </div>
+            ) : scanStatus === 'CAMERA_NOT_FOUND' ? (
+              <div className="text-center">
+                <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mx-auto mb-3">
+                  <Camera size={26} />
+                </div>
+                <h4 className="text-sm font-semibold text-slate-200 mb-1">Camera Not Found</h4>
+                <p className="text-xs text-slate-400 max-w-xs leading-relaxed">
+                  Could not detect a camera device. If you are on an emulator, make sure a camera is active under Virtual Device configurations.
+                </p>
+              </div>
+            ) : scanStatus.startsWith('ERROR:') ? (
+              <div className="text-center">
+                <div className="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 mx-auto mb-3">
+                  <Camera size={26} />
+                </div>
+                <h4 className="text-sm font-semibold text-slate-250 mb-1">Camera Initialization Error</h4>
+                <p className="text-xs text-rose-400/80 max-w-xs leading-relaxed truncate font-mono">
+                  {scanStatus}
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-550 dark:text-slate-400">
+                  <Camera size={26} />
+                </div>
+                <p className="font-sans text-xs text-slate-450 dark:text-slate-400 px-4 max-w-xs leading-relaxed">
+                  {scanStatus}
+                </p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Dynamic Scan status text inside scanning */}
         {isScanning && (
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white font-sans text-xs font-semibold px-3 py-1.5 rounded-full z-25 tracking-wide uppercase">
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white font-sans text-[10px] font-semibold px-3 py-1.5 rounded-full z-25 tracking-wide uppercase">
             {scanStatus}
           </div>
         )}
 
         {/* Trigger Controls overlay/bottom */}
-        <div className="z-30 mt-4">
+        <div className="z-30 mt-3">
           {!isScanning ? (
             <button
               onClick={startScan}
               id="btn-scan-start"
-              className="px-6 py-2.5 bg-slate-900 text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md hover:bg-slate-800 transition duration-150 flex items-center gap-2 cursor-pointer dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+              className="px-6 py-2.5 bg-slate-900 text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md hover:bg-slate-800 transition duration-155 flex items-center gap-2 cursor-pointer dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
             >
-              <Camera size={15} />
-              Open Camera
+              <Camera size={14} />
+              {scanStatus === 'PERMISSION_DENIED' ? 'Retry Scanner' : 'Open Camera'}
             </button>
           ) : (
             <button
               onClick={stopScan}
               id="btn-scan-stop"
-              className="px-6 py-2.5 bg-rose-600 text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md hover:bg-rose-500 transition duration-150 flex items-center gap-2 cursor-pointer"
+              className="px-6 py-2.5 bg-rose-600 text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md hover:bg-rose-500 transition duration-155 flex items-center gap-2 cursor-pointer"
             >
-              <StopCircle size={15} />
+              <StopCircle size={14} />
               Stop Scanning
             </button>
           )}

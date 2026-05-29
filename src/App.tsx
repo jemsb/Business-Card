@@ -250,18 +250,7 @@ export default function App() {
     <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex flex-col p-4 md:p-8 selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
       <div className="max-w-5xl w-full mx-auto flex flex-col gap-6 md:gap-8 flex-1 py-4">
         
-        {/* Modern Web Applications Header */}
-        <header className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-sky-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <IdCard className="text-white" size={20} />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-white tracking-tight">CardWallet</h1>
-              <p className="text-xs text-slate-400 mt-0.5">Digital Business Card Wallet</p>
-            </div>
-          </div>
-        </header>
+
 
         {/* Central screen workspace application section */}
         <main className="flex-1 bg-[#050a1d]/40 rounded-3xl border border-slate-800/80 p-6 md:p-8 backdrop-blur-md shadow-2xl relative min-h-[400px]">

@@ -204,11 +204,7 @@ export default function App() {
 
   const currentOwnPalette = PALETTES[profilePalIdx];
 
-  // Pre-calculate stats metrics for status monitor dashboard panels
-  const completedFields = [profile.name, profile.title, profile.company, profile.email, profile.phone, profile.web].filter(Boolean).length;
-  const completenessPercent = Math.round((completedFields / 6) * 100);
-  const contactsPercent = Math.min(Math.round((contacts.length / 8) * 100), 100);
-  const palettePercent = Math.round(((profilePalIdx + 1) / PALETTES.length) * 100);
+
 
   const resetToDefaults = () => {
     localStorage.removeItem('cardwallet_profile');
@@ -251,368 +247,314 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12 overflow-y-auto selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
-      <div className="flex flex-col lg:flex-row w-full max-w-5xl items-center justify-between gap-10 xl:gap-14 py-6">
+    <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex flex-col p-4 md:p-8 selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
+      <div className="max-w-5xl w-full mx-auto flex flex-col gap-6 md:gap-8 flex-1 py-4">
         
-        {/* LEFT PANEL: Specifications Grid Design Element */}
-        <div className="w-full lg:w-[32%] space-y-7 flex-shrink-0 text-left">
-          <div className="space-y-1.5">
-            <p className="text-sky-400 font-mono text-xs uppercase tracking-widest font-semibold">Component Specs</p>
-            <h2 id="left-title-header" className="text-3xl font-extrabold text-white tracking-tight">System Dashboard</h2>
-            <p className="text-slate-400 text-xs leading-relaxed">
-              A premium business card utility designed with Material You principles, emphasizing custom vector nodes, device storage persistence, and geometric alignment.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-slate-900/40 p-3.5 border border-slate-900/80 rounded-2xl">
-              <p className="text-slate-500 text-[10px] uppercase font-mono font-bold tracking-wider mb-1">Grid System</p>
-              <p className="text-white text-xs font-semibold">Dynamic Flex</p>
+        {/* Modern Web Applications Header */}
+        <header className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-800/80 pb-6">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 to-sky-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+              <IdCard className="text-white" size={20} />
             </div>
-            <div className="bg-slate-900/40 p-3.5 border border-slate-900/80 rounded-2xl">
-              <p className="text-slate-500 text-[10px] uppercase font-mono font-bold tracking-wider mb-1">Corner Radius</p>
-              <p className="text-white text-xs font-semibold">28px / 12px</p>
-            </div>
-            <div className="bg-slate-900/40 p-3.5 border border-slate-900/80 rounded-2xl">
-              <p className="text-slate-500 text-[10px] uppercase font-mono font-bold tracking-wider mb-1">Typeface</p>
-              <p className="text-white text-xs font-semibold">Outfit Sans</p>
-            </div>
-            <div className="bg-slate-900/40 p-3.5 border border-slate-900/80 rounded-2xl">
-              <p className="text-slate-500 text-[10px] uppercase font-mono font-bold tracking-wider mb-1">Palette Nodes</p>
-              <p className="text-white text-xs font-semibold">{PALETTES.length} Nodes</p>
+            <div>
+              <h1 className="text-xl font-bold text-white tracking-tight">CardWallet</h1>
+              <p className="text-xs text-slate-400 mt-0.5">Digital Business Card Wallet</p>
             </div>
           </div>
-          
-          <div className="pt-4 border-t border-slate-800">
-            <div className="flex gap-2">
-              <div className="w-7 h-7 rounded-full bg-indigo-500 shadow-lg animate-pulse" style={{ animationDuration: '3s' }}></div>
-              <div className="w-7 h-7 rounded-full bg-sky-400 shadow-lg animate-pulse" style={{ animationDuration: '4s' }}></div>
-              <div className="w-7 h-7 rounded-full bg-slate-100 shadow-lg"></div>
-              <div className="w-7 h-7 rounded-full bg-slate-800 shadow-lg border border-slate-700"></div>
-            </div>
-          </div>
-        </div>
+        </header>
 
-        {/* CENTER COLUMN: The simulated phone app wrapped inside dark theme */}
-        <div className="relative w-full max-w-[340px] h-[670px] bg-[#050a1d]/60 rounded-[3rem] border-[8px] border-slate-900 shadow-[0_0_60px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col transition-all duration-300 ring-1 ring-slate-800 flex-shrink-0">
-          
-          {/* Top Camera Punch-Hole cutout */}
-          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-24 h-3.5 bg-slate-900 rounded-full z-50 pointer-events-none" />
-
-          {/* Dynamic Simulated Android Status Bar */}
-          <div className="px-6 pt-3 pb-2 flex items-center justify-between text-slate-300 select-none z-40 bg-[#060b1e]/85 backdrop-blur-md sticky top-0">
-            <span className="text-[11px] font-semibold tracking-tight">10:05</span>
-            <div className="flex items-center gap-1.5 opacity-80">
-              <Signal size={11} className="stroke-[2.5]" />
-              <Wifi size={11} className="stroke-[2.5]" />
-              <div className="w-3.5 h-2 border border-slate-400 rounded-[3px] relative flex p-[1px]">
-                <div className="h-full w-[80%] bg-slate-200 rounded-[1px]" />
-                <div className="absolute right-[-2.5px] top-[1.5px] w-[1px] h-[3px] bg-slate-400 rounded-r-sm" />
-              </div>
-            </div>
-          </div>
-
-          {/* Central screen application scrollable viewport area */}
-          <div className="flex-1 overflow-y-auto px-5 pb-20 pt-2 select-none bg-[#050a1d] text-slate-200 custom-scrollbar">
+        {/* Central screen workspace application section */}
+        <main className="flex-1 bg-[#050a1d]/40 rounded-3xl border border-slate-800/80 p-6 md:p-8 backdrop-blur-md shadow-2xl relative min-h-[400px]">
+          <AnimatePresence mode="wait">
             
-            <AnimatePresence mode="wait">
-              {/* TAB #1: My Card */}
-              {activeTab === 'card' && (
-                <motion.div
-                  key="tab-card"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-5"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h1 id="screen-heading-card" className="font-sans text-lg font-bold text-white tracking-tight">
-                        My Card
-                      </h1>
-                      <p className="text-[10px] text-slate-400 mt-0.5">
-                        Your active digital badge and vCard QR.
-                      </p>
-                    </div>
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-505 to-sky-400 flex items-center justify-center font-bold text-xs text-white border border-slate-800">
-                      {profile.name[0]}
-                    </div>
-                  </div>
-
-                  <div className="perspective-1000">
-                    <CardView contact={profile} palette={currentOwnPalette} showQr={true} />
-                  </div>
-
-                  {/* Handheld Actions Row */}
-                  <div className="grid grid-cols-2 gap-2.5 pt-1">
-                    <button
-                      onClick={copyOwnVcard}
-                      id="btn-copy-vcard"
-                      className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl font-sans text-xs font-semibold tracking-wide border border-slate-800 bg-slate-900/60 hover:bg-slate-850 text-slate-200 shadow-sm transition active:scale-95 cursor-pointer"
-                    >
-                      <Copy size={13} />
-                      Copy vCard
-                    </button>
-                    <button
-                      onClick={shareOwnCard}
-                      id="btn-share-vcard"
-                      className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl font-sans text-xs font-semibold tracking-wide border border-[#4338ca] bg-[#4f46e5] hover:bg-[#4338ca] text-white shadow-sm transition active:scale-95 cursor-pointer"
-                    >
-                      <Share2 size={13} />
-                      Share Card
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* TAB #2: Scan Card */}
-              {activeTab === 'scan' && (
-                <motion.div
-                  key="tab-scan"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-5"
-                >
+            {/* TAB #1: My Card */}
+            {activeTab === 'card' && (
+              <motion.div
+                key="tab-card"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.18 }}
+                className="max-w-md mx-auto space-y-6"
+              >
+                <div className="flex items-center justify-between">
                   <div>
-                    <h1 id="screen-heading-scan" className="font-sans text-lg font-bold text-white tracking-tight">
-                      Scan a Card
-                    </h1>
-                    <p className="text-[10px] text-slate-400 mt-0.5">
-                      Turn your camera toward any card QR code.
+                    <h2 id="screen-heading-card" className="font-sans text-xl font-bold text-white tracking-tight">
+                      My Card
+                    </h2>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      Your active digital badge and vCard QR.
                     </p>
                   </div>
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-sky-400 flex items-center justify-center font-bold text-sm text-white border border-slate-800">
+                    {profile.name[0]}
+                  </div>
+                </div>
 
-                  {/* Scanner Interface Block */}
-                  <Scanner onScanResult={handleScannerResult} />
+                <div className="perspective-1000">
+                  <CardView contact={profile} palette={currentOwnPalette} showQr={true} />
+                </div>
 
-                  {/* Scanned Card Results Preview popin (if detected but not saved) */}
-                  {scannedResult && (
-                    <motion.div
-                      initial={{ scale: 0.95, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                      className="p-3.5 bg-slate-900/90 rounded-2xl border border-indigo-500/30 relative"
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <button
+                    onClick={copyOwnVcard}
+                    id="btn-copy-vcard"
+                    className="flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl font-sans text-xs font-semibold tracking-wide border border-slate-800 bg-slate-900/60 hover:bg-slate-850 text-slate-200 shadow-sm transition active:scale-95 cursor-pointer"
+                  >
+                    <Copy size={14} />
+                    Copy vCard
+                  </button>
+                  <button
+                    onClick={shareOwnCard}
+                    id="btn-share-vcard"
+                    className="flex items-center justify-center gap-1.5 py-3 px-4 rounded-xl font-sans text-xs font-semibold tracking-wide border border-[#4338ca] bg-[#4f46e5] hover:bg-[#4338ca] text-white shadow-sm transition active:scale-95 cursor-pointer"
+                  >
+                    <Share2 size={14} />
+                    Share Card
+                  </button>
+                </div>
+              </motion.div>
+            )}
+
+            {/* TAB #2: Scan Card */}
+            {activeTab === 'scan' && (
+              <motion.div
+                key="tab-scan"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.18 }}
+                className="max-w-md mx-auto space-y-6"
+              >
+                <div>
+                  <h2 id="screen-heading-scan" className="font-sans text-xl font-bold text-white tracking-tight">
+                    Scan a Card
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Turn your camera toward any card QR code.
+                  </p>
+                </div>
+
+                <Scanner onScanResult={handleScannerResult} />
+
+                {scannedResult && (
+                  <motion.div
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="p-4 bg-slate-900/90 rounded-2xl border border-indigo-500/30 relative"
+                  >
+                    <span className="absolute top-4 right-4 text-[9px] font-semibold tracking-wide text-indigo-400 px-2 py-0.5 rounded-full bg-indigo-500/15 uppercase">
+                      Decoded
+                    </span>
+
+                    <h4 className="font-sans text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-2">
+                      Detected Contact
+                    </h4>
+
+                    <div className="space-y-1 mb-3.5">
+                      {scannedResult.name && (
+                        <div className="text-[11px] text-slate-300">
+                          <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">FN:</strong> {scannedResult.name}
+                        </div>
+                      )}
+                      {scannedResult.title && (
+                        <div className="text-[11px] text-slate-300">
+                          <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">TITLE:</strong> {scannedResult.title}
+                        </div>
+                      )}
+                      {scannedResult.company && (
+                        <div className="text-[11px] text-slate-300">
+                          <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">ORG:</strong> {scannedResult.company}
+                        </div>
+                      )}
+                      {scannedResult.email && (
+                        <div className="text-[11px] text-slate-300">
+                          <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">EMAIL:</strong> {scannedResult.email}
+                        </div>
+                      )}
+                      {scannedResult.phone && (
+                        <div className="text-[11px] text-slate-300">
+                          <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">TEL:</strong> {scannedResult.phone}
+                        </div>
+                      )}
+                      {scannedResult.web && (
+                        <div className="text-[11px] text-slate-300">
+                          <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">URL:</strong> {scannedResult.web}
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={saveScannedContact}
+                      id="btn-save-scanned"
+                      className="w-full py-2.5 px-4 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer border border-[#4338ca]"
                     >
-                      <span className="absolute top-3 right-3 text-[9px] font-semibold tracking-wide text-indigo-400 px-2 py-0.5 rounded-full bg-indigo-500/15 uppercase">
-                        Decoded
-                      </span>
+                      <UserPlus size={14} />
+                      Save to Others
+                    </button>
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
 
-                      <h4 className="font-sans text-[10px] font-bold text-indigo-400 uppercase tracking-wider mb-2">
-                        Detected Contact
-                      </h4>
+            {/* TAB #3: Others (Contact List) */}
+            {activeTab === 'contacts' && (
+              <motion.div
+                key="tab-contacts"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.18 }}
+                className="max-w-xl mx-auto space-y-6"
+              >
+                <div>
+                  <h2 id="screen-heading-others" className="font-sans text-xl font-bold text-white tracking-tight">
+                    Others
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Saved cards of friends and business associates.
+                  </p>
+                </div>
 
-                      {/* Extracted fields list */}
-                      <div className="space-y-1 mb-3.5">
-                        {scannedResult.name && (
-                          <div className="text-[11px] text-slate-350">
-                            <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">FN:</strong> {scannedResult.name}
-                          </div>
-                        )}
-                        {scannedResult.title && (
-                          <div className="text-[11px] text-slate-350">
-                            <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">TITLE:</strong> {scannedResult.title}
-                          </div>
-                        )}
-                        {scannedResult.company && (
-                          <div className="text-[11px] text-slate-350">
-                            <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">ORG:</strong> {scannedResult.company}
-                          </div>
-                        )}
-                        {scannedResult.email && (
-                          <div className="text-[11px] text-slate-350">
-                            <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">EMAIL:</strong> {scannedResult.email}
-                          </div>
-                        )}
-                        {scannedResult.phone && (
-                          <div className="text-[11px] text-slate-350">
-                            <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">TEL:</strong> {scannedResult.phone}
-                          </div>
-                        )}
-                        {scannedResult.web && (
-                          <div className="text-[11px] text-slate-350">
-                            <strong className="text-slate-500 select-text font-normal font-mono text-[10px]">URL:</strong> {scannedResult.web}
-                          </div>
-                        )}
-                      </div>
+                <div className="relative">
+                  <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-slate-500" size={15} />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full text-xs pl-11 pr-4 py-3 bg-slate-900 border border-slate-800 rounded-xl placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-white"
+                    placeholder="Search contacts..."
+                  />
+                </div>
 
-                      <button
-                        onClick={saveScannedContact}
-                        id="btn-save-scanned"
-                        className="w-full py-2 px-3 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer border border-[#4338ca]"
-                      >
-                        <UserPlus size={13} />
-                        Save to Others
-                      </button>
-                    </motion.div>
-                  )}
-                </motion.div>
-              )}
-
-              {/* TAB #3: Others (Contact List) */}
-              {activeTab === 'contacts' && (
-                <motion.div
-                  key="tab-contacts"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-5"
-                >
-                  <div>
-                    <h1 id="screen-heading-others" className="font-sans text-lg font-bold text-white tracking-tight">
-                      Others
-                    </h1>
-                    <p className="text-[10px] text-slate-400 mt-0.5">
-                      Saved cards of friends and business associates.
+                {filteredContacts.length === 0 ? (
+                  <div className="text-center py-12 text-slate-400 space-y-3 bg-slate-900/30 border border-slate-900 rounded-2xl">
+                    <Users size={32} className="mx-auto opacity-30 mb-0.5" />
+                    <p className="text-xs font-medium">
+                      {contacts.length === 0 ? 'No contacts yet.' : 'No matches found.'}
+                    </p>
+                    <p className="text-[10px] opacity-65 px-4 max-w-xs mx-auto">
+                      {contacts.length === 0 ? 'Open "Scan" to grab some QR business cards.' : 'Try adjusting your query term.'}
                     </p>
                   </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredContacts.map((c) => {
+                      const expanded = expandedContactId === c.id;
+                      const initials = (c.name || 'C')
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .slice(0, 2)
+                        .toUpperCase();
 
-                  {/* Search Bar wrapper */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-505" size={14} />
-                    <input
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full text-xs pl-9 pr-3 py-2.5 bg-slate-900 border border-slate-800 rounded-xl placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 text-white"
-                      placeholder="Search contacts..."
-                    />
-                  </div>
+                      const pal = PALETTES[c.palIdx] || PALETTES[0];
 
-                  {/* Render Expandable list */}
-                  {filteredContacts.length === 0 ? (
-                    <div className="text-center py-8 text-slate-400 space-y-2 bg-slate-900/30 border border-slate-900 rounded-2xl">
-                      <Users size={28} className="mx-auto opacity-30 mb-0.5" />
-                      <p className="text-xs font-medium">
-                        {contacts.length === 0 ? 'No contacts yet.' : 'No matches found.'}
-                      </p>
-                      <p className="text-[9px] opacity-65 px-4">
-                        {contacts.length === 0 ? 'Open "Scan" to grab some QR business cards.' : 'Try adjusting your query term.'}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-2.5">
-                      {filteredContacts.map((c) => {
-                        const expanded = expandedContactId === c.id;
-                        const initials = (c.name || 'C')
-                          .split(' ')
-                          .map((n) => n[0])
-                          .join('')
-                          .slice(0, 2)
-                          .toUpperCase();
-
-                        const pal = PALETTES[c.palIdx] || PALETTES[0];
-
-                        return (
+                      return (
+                        <div
+                          key={c.id}
+                          className="bg-slate-900 border border-slate-800/80 rounded-2xl overflow-hidden shadow-sm transition hover:border-slate-700 flex flex-col h-fit"
+                        >
                           <div
-                            key={c.id}
-                            className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-sm transition hover:border-slate-700"
+                            onClick={() => setExpandedContactId(expanded ? null : c.id)}
+                            className="p-4 flex items-center justify-between gap-3 cursor-pointer select-none active:bg-slate-850"
                           >
-                            {/* Accordion Header row */}
-                            <div
-                              onClick={() => setExpandedContactId(expanded ? null : c.id)}
-                              className="p-3 flex items-center justify-between gap-3 cursor-pointer select-none active:bg-slate-850"
-                            >
-                              <div className="flex items-center gap-3 min-w-0">
-                                <div
-                                  className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-[11px]"
-                                  style={{
-                                    backgroundColor: `${pal.bg}22`,
-                                    color: pal.bg === '#ffffff' ? '#ffffff' : pal.bg,
-                                    border: `1px solid ${pal.bg}44`
-                                  }}
-                                >
-                                  {initials}
-                                </div>
-                                <div className="min-w-0">
-                                  <h4 className="text-xs font-bold text-white truncate">
-                                    {c.name}
-                                  </h4>
-                                  <p className="text-[10px] text-slate-400 truncate mt-0.5">
-                                    {[c.title, c.company].filter(Boolean).join(' · ')}
-                                  </p>
-                                </div>
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div
+                                className="w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs"
+                                style={{
+                                  backgroundColor: `${pal.bg}22`,
+                                  color: pal.bg === '#ffffff' ? '#ffffff' : pal.bg,
+                                  border: `1px solid ${pal.bg}44`
+                                }}
+                              >
+                                {initials}
                               </div>
-                              <div className="flex items-center gap-1.5">
-                                {/* Trigger actions */}
-                                <button
-                                  onClick={(e) => handleDeleteContact(c.id, e)}
-                                  className="p-1 px-1.5 text-slate-500 hover:text-rose-450 rounded-md transition duration-150 cursor-pointer"
-                                  title="Remove Contact"
-                                >
-                                  <Trash2 size={12} />
-                                </button>
-                                {expanded ? <ChevronUp size={13} className="text-slate-400" /> : <ChevronDown size={13} className="text-slate-400" />}
+                              <div className="min-w-0">
+                                <h4 className="text-xs font-bold text-white truncate">
+                                  {c.name}
+                                </h4>
+                                <p className="text-[10px] text-slate-400 truncate mt-0.5">
+                                  {[c.title, c.company].filter(Boolean).join(' · ')}
+                                </p>
                               </div>
                             </div>
-
-                            {/* Accordion Expandable body with actual badge block preview */}
-                            <div
-                              className={`transition-all duration-300 ease-in-out ${
-                                expanded ? 'max-h-[460px] opacity-100 border-t border-slate-800 p-3.5 bg-[#030613]/55' : 'max-h-0 opacity-0 pointer-events-none'
-                              }`}
-                            >
-                              {expanded && (
-                                <div className="space-y-3.5">
-                                  <CardView contact={c} palette={pal} showQr={true} />
-                                  
-                                  {/* Quick interactions */}
-                                  <div className="flex items-center justify-end gap-1.5 text-[10px] text-slate-400">
-                                    <span>Actions:</span>
-                                    <a
-                                      href={`mailto:${c.email}`}
-                                      className="p-1 px-2 border border-slate-800 bg-slate-900 rounded-lg hover:text-white transition"
-                                    >
-                                      Email
-                                    </a>
-                                    {c.phone && (
-                                      <a
-                                        href={`tel:${c.phone}`}
-                                        className="p-1 px-2 border border-slate-800 bg-slate-900 rounded-lg hover:text-white transition"
-                                      >
-                                        Call
-                                      </a>
-                                    )}
-                                  </div>
-                                </div>
-                              )}
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={(e) => handleDeleteContact(c.id, e)}
+                                className="p-1 px-1.5 text-slate-500 hover:text-rose-400 rounded-md transition duration-150 cursor-pointer"
+                                title="Remove Contact"
+                              >
+                                <Trash2 size={13} />
+                              </button>
+                              {expanded ? <ChevronUp size={14} className="text-slate-400" /> : <ChevronDown size={14} className="text-slate-400" />}
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </motion.div>
-              )}
 
-              {/* TAB #4: Profile */}
-              {activeTab === 'profile' && (
-                <motion.div
-                  key="tab-profile"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-5"
-                >
-                  <div>
-                    <h1 id="screen-heading-profile" className="font-sans text-lg font-bold text-white tracking-tight">
-                      Profile
-                    </h1>
-                    <p className="text-[10px] text-slate-400 mt-0.5">
-                      Configure your business card and identity theme.
-                    </p>
+                          <div
+                            className={`transition-all duration-300 ease-in-out ${
+                              expanded ? 'max-h-[460px] opacity-100 border-t border-slate-800 p-4 bg-[#030613]/55' : 'max-h-0 opacity-0 pointer-events-none'
+                            }`}
+                          >
+                            {expanded && (
+                              <div className="space-y-4">
+                                <CardView contact={c} palette={pal} showQr={true} />
+                                
+                                <div className="flex items-center justify-end gap-1.5 text-[10px] text-slate-400">
+                                  <span>Actions:</span>
+                                  <a
+                                    href={`mailto:${c.email}`}
+                                    className="p-1.5 px-3.5 border border-slate-850 bg-slate-950 rounded-lg hover:text-white transition font-semibold"
+                                  >
+                                    Email
+                                  </a>
+                                  {c.phone && (
+                                    <a
+                                      href={`tel:${c.phone}`}
+                                      className="p-1.5 px-3.5 border border-slate-850 bg-slate-950 rounded-lg hover:text-white transition font-semibold"
+                                    >
+                                      Call
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
+                )}
+              </motion.div>
+            )}
 
-                  <div className="space-y-3.5">
-                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+            {/* TAB #4: Profile */}
+            {activeTab === 'profile' && (
+              <motion.div
+                key="tab-profile"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.18 }}
+                className="max-w-2xl mx-auto space-y-6"
+              >
+                <div>
+                  <h2 id="screen-heading-profile" className="font-sans text-xl font-bold text-white tracking-tight">
+                    Profile
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Configure your business card and identity theme.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Column 1: Details */}
+                  <div className="space-y-4">
+                    <h3 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                       Your Details
                     </h3>
 
-                    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-3.5 space-y-3">
-                      {/* Full Name input */}
+                    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-4 space-y-3.5">
                       <div className="space-y-1">
                         <label htmlFor="f-name" className="block text-[9px] font-bold uppercase tracking-wider text-slate-500">
                           Full Name
@@ -627,7 +569,6 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Job Title input */}
                       <div className="space-y-1">
                         <label htmlFor="f-title" className="block text-[9px] font-bold uppercase tracking-wider text-slate-500">
                           Job Title
@@ -642,7 +583,6 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Company input */}
                       <div className="space-y-1">
                         <label htmlFor="f-company" className="block text-[9px] font-bold uppercase tracking-wider text-slate-500">
                           Company
@@ -657,7 +597,6 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Email input */}
                       <div className="space-y-1">
                         <label htmlFor="f-email" className="block text-[9px] font-bold uppercase tracking-wider text-slate-500">
                           Email Address
@@ -672,7 +611,6 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Phone input */}
                       <div className="space-y-1">
                         <label htmlFor="f-phone" className="block text-[9px] font-bold uppercase tracking-wider text-slate-500">
                           Phone Number
@@ -687,7 +625,6 @@ export default function App() {
                         />
                       </div>
 
-                      {/* Website input */}
                       <div className="space-y-1">
                         <label htmlFor="f-web" className="block text-[9px] font-bold uppercase tracking-wider text-slate-500">
                           Website Link
@@ -704,215 +641,135 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Theme Selector Palette Swatches */}
-                  <div className="space-y-3.5">
-                    <h3 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                      Card Color Accent
-                    </h3>
-                    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-3.5">
-                      <div className="flex gap-2.5 flex-wrap">
-                        {PALETTES.map((pal, idx) => {
-                          const isMainActive = profilePalIdx === idx;
-                          const isLight = isLightColor(pal.bg);
-                          return (
-                            <div
-                              key={idx}
-                              onClick={() => setProfilePalIdx(idx)}
-                              className="w-7 h-7 rounded-full cursor-pointer relative flex items-center justify-center border transition-all duration-150 shadow-sm active:scale-90"
-                              style={{
-                                backgroundColor: pal.bg,
-                                borderColor: isMainActive
-                                  ? '#4f46e5'
-                                  : isLight
-                                  ? '#334155'
-                                  : 'transparent',
-                                boxShadow: isMainActive ? '0 0 0 2px rgba(99, 102, 241, 0.4)' : 'none'
-                              }}
-                            >
-                              {isMainActive && (
-                                <Check
-                                  size={13}
-                                  style={{
-                                    color: pal.text
-                                  }}
-                                  className="stroke-[3.5]"
-                                />
-                              )}
-                            </div>
-                          );
-                        })}
+                  {/* Column 2: Theme and actions */}
+                  <div className="space-y-5">
+                    <div className="space-y-3.5 font-sans">
+                      <h3 className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                        Card Color Accent
+                      </h3>
+                      <div className="bg-slate-900 rounded-2xl border border-slate-800 p-4">
+                        <div className="flex gap-2.5 flex-wrap">
+                          {PALETTES.map((pal, idx) => {
+                            const isMainActive = profilePalIdx === idx;
+                            const isLight = isLightColor(pal.bg);
+                            return (
+                              <div
+                                key={idx}
+                                onClick={() => setProfilePalIdx(idx)}
+                                className="w-8 h-8 rounded-full cursor-pointer relative flex items-center justify-center border transition-all duration-150 shadow-sm active:scale-90"
+                                style={{
+                                  backgroundColor: pal.bg,
+                                  borderColor: isMainActive
+                                    ? '#4f46e5'
+                                    : isLight
+                                    ? '#334155'
+                                    : 'transparent',
+                                  boxShadow: isMainActive ? '0 0 0 2px rgba(99, 102, 241, 0.4)' : 'none'
+                                }}
+                              >
+                                {isMainActive && (
+                                  <Check
+                                    size={13}
+                                    style={{
+                                      color: pal.text
+                                    }}
+                                    className="stroke-[3.5]"
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
+
+                    <div className="space-y-3 pt-2">
+                      <button
+                        onClick={() => setActiveTab('card')}
+                        className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-[#4f46e5] text-white border border-[#4338ca] hover:bg-[#4338ca] font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                      >
+                        <IdCard size={14} />
+                        View Updated Card
+                      </button>
+                      <button
+                        onClick={resetToDefaults}
+                        className="w-full py-3 bg-slate-900 border border-slate-800 hover:bg-slate-850 hover:text-slate-300 text-slate-400 text-xs font-semibold rounded-xl transition duration-150 cursor-pointer"
+                      >
+                        Reset Data to Default
+                      </button>
+                    </div>
                   </div>
-
-                  {/* Primary Card View Pivot CTA */}
-                  <button
-                    onClick={() => setActiveTab('card')}
-                    className="w-full flex items-center justify-center gap-2 py-2.5 px-3 bg-[#4f46e5] text-white border border-[#4338ca] hover:bg-[#4338ca] font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
-                  >
-                    <IdCard size={14} />
-                    View Updated Card
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-          </div>
-
-          {/* Global Toast Popup layout notification overlay */}
-          <AnimatePresence>
-            {toastMessage && (
-              <motion.div
-                initial={{ opacity: 0, y: 50, x: '-50%' }}
-                animate={{ opacity: 1, y: 0, x: '-50%' }}
-                exit={{ opacity: 0, y: 20, x: '-50%' }}
-                className="absolute bottom-18 left-1/2 -translate-x-1/2 bg-slate-900/90 dark:bg-slate-50/95 text-white dark:text-slate-900 text-[11px] font-sans font-medium px-3.5 py-2.5 rounded-full z-50 flex items-center gap-1.5 shadow-lg whitespace-nowrap backdrop-blur-sm pointer-events-none"
-              >
-                <Check size={12} className="text-indigo-400 dark:text-indigo-600 font-bold" />
-                <span>{toastMessage}</span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
+        </main>
 
-          {/* Simulated Android Bottom Tab Bar Navigation system */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-[#040816]/95 border-t border-slate-900 flex items-center justify-around px-2 z-40 backdrop-blur-md select-none">
+        {/* Footer Navigation Tabs */}
+        <footer className="flex justify-center border-t border-slate-800/60 pt-6 mt-4">
+          <nav className="flex items-center bg-[#050a1d]/85 p-1.5 rounded-2xl border border-slate-800/80 flex-wrap justify-center shadow-xl">
             <button
               onClick={() => {
                 setActiveTab('card');
-                setScannedResult(null); // Reset scanned cache if they hop away
+                setScannedResult(null);
               }}
-              id="bn-card"
-              className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 max-w-[70px] bg-transparent border-none outline-none transition duration-150 cursor-pointer ${
-                activeTab === 'card' ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-400'
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                activeTab === 'card' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <IdCard size={18} className={activeTab === 'card' ? 'stroke-[2.5]' : 'stroke-[1.8]'} />
-              <span className="text-[9px] font-bold tracking-wide uppercase">Card</span>
-              {activeTab === 'card' && (
-                <motion.span layoutId="bnav-dot" className="w-1 h-1 rounded-full bg-indigo-400 mt-0.5" />
-              )}
+              <IdCard size={14} />
+              <span>My Card</span>
             </button>
-
             <button
               onClick={() => setActiveTab('scan')}
-              id="bn-scan"
-              className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 max-w-[70px] bg-transparent border-none outline-none transition duration-150 cursor-pointer ${
-                activeTab === 'scan' ? 'text-indigo-400 font-bold' : 'text-slate-500 hover:text-slate-400'
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                activeTab === 'scan' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Scan size={18} className={activeTab === 'scan' ? 'stroke-[2.5]' : 'stroke-[1.8]'} />
-              <span className="text-[9px] font-bold tracking-wide uppercase">Scan</span>
-              {activeTab === 'scan' && (
-                <motion.span layoutId="bnav-dot" className="w-1 h-1 rounded-full bg-indigo-400 mt-0.5" />
-              )}
+              <Scan size={14} />
+              <span>Scan</span>
             </button>
-
             <button
               onClick={() => setActiveTab('contacts')}
-              id="bn-contacts"
-              className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 max-w-[70px] bg-transparent border-none outline-none transition duration-150 cursor-pointer relative ${
-                activeTab === 'contacts' ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-400'
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer relative ${
+                activeTab === 'contacts' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Users size={18} className={activeTab === 'contacts' ? 'stroke-[2.5]' : 'stroke-[1.8]'} />
-              <span className="text-[9px] font-bold tracking-wide uppercase font-sans">Others</span>
-              
-              {/* Contacts Count Badge indicator layout */}
+              <Users size={14} />
+              <span>Others</span>
               {contacts.length > 0 && (
-                <span className="absolute -top-1 right-2 inline-flex items-center justify-center px-1.5 py-0.5 text-[8px] font-extrabold font-mono bg-[#4f46e5]/80 text-white rounded-full leading-none shadow-sm animate-pulse min-w-[16px]">
+                <span className="inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full text-[9px] font-extrabold bg-[#4f46e5] border border-slate-900 text-white leading-none ml-1">
                   {contacts.length}
                 </span>
               )}
-              {activeTab === 'contacts' && (
-                <motion.span layoutId="bnav-dot" className="w-1 h-1 rounded-full bg-indigo-400 mt-0.5" />
-              )}
             </button>
-
             <button
               onClick={() => setActiveTab('profile')}
-              id="bn-profile"
-              className={`flex flex-col items-center justify-center gap-1 flex-1 py-1 max-w-[70px] bg-transparent border-none outline-none transition duration-150 cursor-pointer ${
-                activeTab === 'profile' ? 'text-indigo-400' : 'text-slate-500 hover:text-slate-400'
+              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                activeTab === 'profile' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Settings size={18} className={activeTab === 'profile' ? 'stroke-[2.5]' : 'stroke-[1.8]'} />
-              <span className="text-[9px] font-bold tracking-wide uppercase">Profile</span>
-              {activeTab === 'profile' && (
-                <motion.span layoutId="bnav-dot" className="w-1 h-1 rounded-full bg-indigo-400 mt-0.5" />
-              )}
+              <Settings size={14} />
+              <span>Profile</span>
             </button>
-          </div>
-
-          {/* Soft virtual gesture/home indicator bar at bottom of mobile frame */}
-          <div className="absolute bottom-1.5 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-slate-800 rounded-full z-50 pointer-events-none" />
-
-        </div>
-
-        {/* RIGHT PANEL: Status Monitor & Rebuild Cache dashboard elements */}
-        <div className="w-full lg:w-[32%] flex flex-col items-start lg:items-end lg:text-right space-y-12">
-          
-          <div className="space-y-4 w-full">
-            <p className="text-sky-450 font-mono text-xs uppercase tracking-widest font-semibold text-sky-400">Status Monitor</p>
-            <div className="space-y-6">
-              
-              {/* PROGRESS BAR 1: Profile Completeness */}
-              <div className="space-y-1 rounded-xl">
-                <div className="flex justify-between lg:justify-end gap-3 text-xs">
-                  <span className="text-slate-400">Profile Completeness</span>
-                  <span className="text-white font-bold">{completenessPercent}%</span>
-                </div>
-                <div className="w-full lg:w-48 h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-indigo-500 rounded-full transition-all duration-300" style={{ width: `${completenessPercent}%` }} />
-                </div>
-              </div>
-
-              {/* PROGRESS BAR 2: Contacts Saved */}
-              <div className="space-y-1 rounded-xl">
-                <div className="flex justify-between lg:justify-end gap-3 text-xs">
-                  <span className="text-slate-400">Wallet Load</span>
-                  <span className="text-white font-bold">{contactsPercent}%</span>
-                </div>
-                <div className="w-full lg:w-48 h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-sky-400 rounded-full transition-all duration-300" style={{ width: `${contactsPercent}%` }} />
-                </div>
-              </div>
-
-              {/* PROGRESS BAR 3: Gradient Nodes Map */}
-              <div className="space-y-1 rounded-xl">
-                <div className="flex justify-between lg:justify-end gap-3 text-xs">
-                  <span className="text-slate-400">Active Node Accent</span>
-                  <span className="text-white font-bold">{palettePercent}%</span>
-                </div>
-                <div className="w-full lg:w-48 h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                  <div className="h-full bg-slate-350 rounded-full transition-all duration-300" style={{ width: `${palettePercent}%` }} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Dynamic Rebuild Cache card box */}
-          <div className="bg-slate-900/60 border border-slate-900 p-5 rounded-3xl w-full max-w-xs shadow-2xl text-left">
-            <div className="flex justify-between items-center mb-4">
-              <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-555 bg-emerald-500 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              </span>
-              <p className="text-slate-500 text-[9px] font-bold font-mono uppercase tracking-wider">Version 4.0.2</p>
-            </div>
-            
-            <p className="text-slate-300 text-xs mb-4 leading-relaxed">
-              System build verified. Local databases bound & active. All dynamic color swatches mapped successfully.
-            </p>
-            
-            <button
-              onClick={resetToDefaults}
-              className="w-full py-2.5 bg-slate-800 text-white text-xs font-bold rounded-xl border border-slate-700 hover:bg-slate-750 transition duration-150 cursor-pointer"
-            >
-              REBUILD CACHE
-            </button>
-          </div>
-        </div>
-
+          </nav>
+        </footer>
       </div>
+
+      {/* Global Toast Notification Popup layer */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, x: '-50%' }}
+            animate={{ opacity: 1, y: 0, x: '-50%' }}
+            exit={{ opacity: 0, y: 20, x: '-50%' }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900/95 text-slate-200 text-xs font-sans font-medium px-4 py-2.5 rounded-full z-50 flex items-center gap-2 shadow-xl whitespace-nowrap border border-slate-800"
+          >
+            <Check size={13} className="text-indigo-400 font-bold" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

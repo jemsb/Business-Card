@@ -247,13 +247,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex flex-col p-4 md:p-8 selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
-      <div className="max-w-5xl w-full mx-auto flex flex-col gap-6 md:gap-8 flex-1 py-4">
+    <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex flex-col p-4 md:p-6 selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
+      <div className="max-w-xl w-full mx-auto flex flex-col gap-4 py-2">
         
 
 
         {/* Central screen workspace application section */}
-        <main className="flex-1 bg-[#050a1d]/40 rounded-3xl border border-slate-800/80 p-6 md:p-8 backdrop-blur-md shadow-2xl relative min-h-[400px]">
+        <main className="bg-[#050a1d]/40 rounded-3xl border border-slate-800/80 p-5 md:p-6 backdrop-blur-md shadow-2xl relative">
           <AnimatePresence mode="wait">
             
             {/* TAB #1: My Card */}
@@ -695,7 +695,7 @@ export default function App() {
         </main>
 
         {/* Footer Navigation Tabs */}
-        <footer className="flex justify-center border-t border-slate-800/60 pt-6 mt-4">
+        <footer className="flex justify-center pt-2 mt-1">
           <nav className="flex items-center bg-[#050a1d]/85 p-1.5 rounded-2xl border border-slate-800/80 flex-wrap justify-center shadow-xl">
             <button
               onClick={() => {

@@ -6,3 +6,22 @@
   --font-sans: "Outfit", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
+
+/* Native Android-like hybrid application optimizations */
+html, body {
+  overscroll-behavior-y: contain; /* Prevents Chrome's pull-to-refresh overlay on Android */
+  -webkit-tap-highlight-color: transparent; /* Removes standard tap overlay */
+  -webkit-touch-callout: none; /* Disables callout on long press */
+}
+
+/* Optimize tap speed on actionable items */
+button, a, [role="button"], select, input, textarea {
+  touch-action: manipulation;
+}
+
+/* Prevent text-selection on pure UI elements for fluid interface touch actions */
+nav, button, svg, img {
+  user-select: none;
+  -webkit-user-select: none;
+}
+

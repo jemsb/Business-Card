@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Mail, Phone, Globe, Award } from 'lucide-react';
 import { Contact, Palette } from '../types';
 import { QrCodeCanvas } from './QrCodeCanvas';
@@ -11,6 +12,28 @@ interface CardViewProps {
 
 export function CardView({ contact, palette, showQr = true }: CardViewProps) {
   const vcardText = getVcard(contact);
+  const [qrWidth, setQrWidth] = useState(130);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // Dynamic adapt QR Code width matching viewport width.
+      // On narrow android screens (< 380px or < 430px), we scale compact QR dimensions
+      // so contact text labels have maximum space to stretch.
+      if (window.innerWidth < 380) {
+        setQrWidth(95);
+      } else if (window.innerWidth < 430) {
+        setQrWidth(120);
+      } else {
+        setQrWidth(160);
+      }
+    };
+
+    handleResize(); // trigger on initial load
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div
@@ -67,10 +90,10 @@ export function CardView({ contact, palette, showQr = true }: CardViewProps) {
         {/* Right column: QR Code */}
         {showQr && (
           <div className="flex-shrink-0 flex items-center justify-center">
-            <div className="bg-white/5 p-1.5 rounded-xl shadow-inner">
+            <div className="bg-white/5 p-1.5 rounded-xl shadow-inner transition-all duration-350">
               <QrCodeCanvas
                 text={vcardText}
-                width={170}
+                width={qrWidth}
                 fgColor={palette.text}
                 bgColor={palette.bg}
               />

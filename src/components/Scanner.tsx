@@ -14,6 +14,10 @@ export function Scanner({ onScanResult }: ScannerProps) {
   const [manualText, setManualText] = useState('');
   const [parseError, setParseError] = useState('');
   const [pastedSuccessfully, setPastedSuccessfully] = useState(false);
+  const [cameraError, setCameraError] = useState<{
+    type: 'PERMISSION_DENIED' | 'NOT_FOUND' | 'GENERIC';
+    message: string;
+  } | null>(null);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -75,6 +79,7 @@ export function Scanner({ onScanResult }: ScannerProps) {
 
   const startScan = async () => {
     setParseError('');
+    setCameraError(null);
     setScanStatus('Requesting camera access...');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -92,13 +97,29 @@ export function Scanner({ onScanResult }: ScannerProps) {
       animationFrameId.current = requestAnimationFrame(scanLoop);
     } catch (err: any) {
       console.error(err);
-      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        setScanStatus('PERMISSION_DENIED');
-      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
-        setScanStatus('CAMERA_NOT_FOUND');
+      const errMsg = err.message || '';
+      const errName = err.name || '';
+      
+      let type: 'PERMISSION_DENIED' | 'NOT_FOUND' | 'GENERIC' = 'GENERIC';
+      let message = 'An unknown error occurred while accessing the camera.';
+      
+      if (errName === 'NotAllowedError' || errName === 'PermissionDeniedError' || errMsg.toLowerCase().includes('permission')) {
+        type = 'PERMISSION_DENIED';
+        message = 'Camera permission denied. Please check your browser settings and allow camera access.';
+      } else if (
+        errName === 'NotFoundError' || 
+        errName === 'DevicesNotFoundError' || 
+        errMsg.toLowerCase().includes('not found') || 
+        errMsg.toLowerCase().includes('device not found')
+      ) {
+        type = 'NOT_FOUND';
+        message = 'Camera hardware not found. Ideal for testing via "Paste Raw vCard Data" input below.';
       } else {
-        setScanStatus(`ERROR: ${err.message || 'Could not start camera'}`);
+        message = `${errName}: ${errMsg || 'Unexpected camera failure'}`;
       }
+      
+      setCameraError({ type, message });
+      setScanStatus('Camera initialization failed.');
     }
   };
 
@@ -170,53 +191,34 @@ export function Scanner({ onScanResult }: ScannerProps) {
           </div>
         )}
 
-        {/* Static State & Error Views */}
+        {/* Static State View */}
         {!isScanning && (
-          <div className="z-0 py-4 flex flex-col items-center gap-3 w-full max-w-md">
-            {scanStatus === 'PERMISSION_DENIED' ? (
-              <div className="text-center p-2">
-                <div className="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 mx-auto mb-3">
-                  <Camera size={26} />
+          <div className="z-0 py-4 flex flex-col items-center gap-3 w-full max-w-sm px-4">
+            {cameraError ? (
+              <div className="space-y-2 text-center">
+                <div className={`w-14 h-14 rounded-full mx-auto flex items-center justify-center ${
+                  cameraError.type === 'NOT_FOUND' 
+                    ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' 
+                    : 'bg-rose-500/10 text-rose-500 border border-rose-500/20'
+                }`}>
+                  <Camera size={24} />
                 </div>
-                <h4 className="text-sm font-semibold text-slate-250 dark:text-slate-100 mb-1">Camera Permission Denied</h4>
-                <p className="text-xs text-slate-400 max-w-sm mx-auto leading-relaxed mb-4">
-                  The app doesn't have system permission to access your camera. Give this web view or browser camera access in your Android/device settings.
-                </p>
-                <div className="bg-slate-905 bg-[#0f172a]/90 text-left p-3.5 rounded-xl border border-slate-805 border-slate-800 text-[11px] font-mono leading-relaxed text-slate-300 max-h-[140px] overflow-y-auto shadow-inner select-all">
-                  <div className="text-emerald-400 font-semibold mb-1">// Capacitor prompt AndroidManifest.xml:</div>
-                  &lt;uses-permission android:name="android.permission.CAMERA" /&gt;<br/>
-                  &lt;uses-feature android:name="android.hardware.camera" android:required="false" /&gt;
-                </div>
-              </div>
-            ) : scanStatus === 'CAMERA_NOT_FOUND' ? (
-              <div className="text-center">
-                <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mx-auto mb-3">
-                  <Camera size={26} />
-                </div>
-                <h4 className="text-sm font-semibold text-slate-200 mb-1">Camera Not Found</h4>
-                <p className="text-xs text-slate-400 max-w-xs leading-relaxed">
-                  Could not detect a camera device. If you are on an emulator, make sure a camera is active under Virtual Device configurations.
-                </p>
-              </div>
-            ) : scanStatus.startsWith('ERROR:') ? (
-              <div className="text-center">
-                <div className="w-14 h-14 rounded-full bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-500 mx-auto mb-3">
-                  <Camera size={26} />
-                </div>
-                <h4 className="text-sm font-semibold text-slate-250 mb-1">Camera Initialization Error</h4>
-                <p className="text-xs text-rose-400/80 max-w-xs leading-relaxed truncate font-mono">
-                  {scanStatus}
+                <h4 className="font-sans text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  {cameraError.type === 'NOT_FOUND' ? 'No Camera Device Detected' : 'Camera Permission Error'}
+                </h4>
+                <p className="font-sans text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs mx-auto">
+                  {cameraError.message}
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col items-center gap-2">
-                <div className="w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-550 dark:text-slate-400">
-                  <Camera size={26} />
+              <>
+                <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-500">
+                  <Camera size={28} />
                 </div>
-                <p className="font-sans text-xs text-slate-450 dark:text-slate-400 px-4 max-w-xs leading-relaxed">
+                <p className="font-sans text-sm text-slate-500 px-4 max-w-xs leading-relaxed">
                   {scanStatus}
                 </p>
-              </div>
+              </>
             )}
           </div>
         )}
@@ -237,7 +239,7 @@ export function Scanner({ onScanResult }: ScannerProps) {
               className="px-6 py-2.5 bg-slate-900 text-white font-sans text-xs font-semibold tracking-wide rounded-xl shadow-md hover:bg-slate-800 transition duration-155 flex items-center gap-2 cursor-pointer dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
             >
               <Camera size={14} />
-              {scanStatus === 'PERMISSION_DENIED' ? 'Retry Scanner' : 'Open Camera'}
+              {cameraError ? 'Retry Camera' : 'Open Camera'}
             </button>
           ) : (
             <button

@@ -37,50 +37,50 @@ export function CardView({ contact, palette, showQr = true }: CardViewProps) {
 
   return (
     <div
-      className="w-full rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform border border-transparent min-h-[190px]"
+      className="w-full rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform border border-transparent min-h-[180px]"
       style={{
         backgroundColor: palette.bg,
         color: palette.text,
       }}
     >
       {/* Container holding details and QR side-by-side */}
-      <div className="p-6 flex flex-row items-center justify-between gap-5 sm:gap-6">
+      <div className="p-4 sm:p-6 flex flex-row items-center justify-between gap-3 sm:gap-6">
         {/* Left column: Contact details */}
-        <div className="flex-1 flex flex-col justify-between gap-4 min-w-0">
+        <div className="flex-1 flex flex-col justify-between gap-3 sm:gap-4 min-w-0">
           <div>
-            <h3 className="font-sans text-lg sm:text-xl font-bold tracking-tight text-current select-all truncate">
+            <h3 className="font-sans text-base sm:text-xl font-bold tracking-tight text-current select-all truncate">
               {contact.name || 'Anonymous'}
             </h3>
-            <p className="font-sans text-[11px] sm:text-xs opacity-75 mt-0.5 tracking-wide select-all truncate">
+            <p className="font-sans text-[10px] sm:text-xs opacity-75 mt-0.5 tracking-wide select-all truncate">
               {contact.title || 'No Title'}
             </p>
           </div>
 
-          <div className="space-y-1.5">
+          <div className="space-y-1 sm:space-y-1.5">
             {contact.company && (
-              <p className="font-sans text-[10px] sm:text-xs font-semibold uppercase tracking-wider opacity-90 select-all mb-1 flex items-center gap-1.5 truncate">
-                <Award size={13} className="opacity-80 flex-shrink-0" />
+              <p className="font-sans text-[9px] sm:text-xs font-semibold uppercase tracking-wider opacity-90 select-all mb-0.5 flex items-center gap-1 sm:gap-1.5 truncate">
+                <Award size={12} className="opacity-80 flex-shrink-0" />
                 <span>{contact.company}</span>
               </p>
             )}
 
             {contact.email && (
-              <div className="flex items-center gap-1.5 sm:gap-2 text-current text-[11px] sm:text-xs select-all min-w-0">
-                <Mail size={12} className="opacity-80 flex-shrink-0" />
+              <div className="flex items-center gap-1 sm:gap-2 text-current text-[10px] sm:text-xs select-all min-w-0">
+                <Mail size={11} className="opacity-80 flex-shrink-0" />
                 <span className="truncate">{contact.email}</span>
               </div>
             )}
 
             {contact.phone && (
-              <div className="flex items-center gap-1.5 sm:gap-2 text-current text-[11px] sm:text-xs select-all min-w-0">
-                <Phone size={12} className="opacity-80 flex-shrink-0" />
+              <div className="flex items-center gap-1 sm:gap-2 text-current text-[10px] sm:text-xs select-all min-w-0">
+                <Phone size={11} className="opacity-80 flex-shrink-0" />
                 <span className="truncate">{contact.phone}</span>
               </div>
             )}
 
             {contact.web && (
-              <div className="flex items-center gap-1.5 sm:gap-2 text-current text-[11px] sm:text-xs select-all min-w-0">
-                <Globe size={12} className="opacity-80 flex-shrink-0" />
+              <div className="flex items-center gap-1 sm:gap-2 text-current text-[10px] sm:text-xs select-all min-w-0">
+                <Globe size={11} className="opacity-80 flex-shrink-0" />
                 <span className="truncate">{contact.web}</span>
               </div>
             )}
@@ -90,7 +90,7 @@ export function CardView({ contact, palette, showQr = true }: CardViewProps) {
         {/* Right column: QR Code */}
         {showQr && (
           <div className="flex-shrink-0 flex items-center justify-center">
-            <div className="bg-white/5 p-1.5 rounded-xl shadow-inner transition-all duration-350">
+            <div className="bg-white/5 p-1 sm:p-1.5 rounded-xl shadow-inner transition-all duration-350">
               <QrCodeCanvas
                 text={vcardText}
                 width={qrWidth}

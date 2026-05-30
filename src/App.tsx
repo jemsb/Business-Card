@@ -247,13 +247,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex flex-col p-4 md:p-6 selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
-      <div className="max-w-xl w-full mx-auto flex flex-col gap-4 py-2">
+    <div className="min-h-screen w-full bg-[#020617] text-slate-200 font-sans flex flex-col p-2.5 sm:p-4 md:p-6 selection:bg-[#312e81]" style={{ backgroundColor: '#020617' }}>
+      <div className="max-w-xl w-full mx-auto flex flex-col gap-3 sm:gap-4 py-1 sm:py-2 flex-1 justify-center">
         
 
 
         {/* Central screen workspace application section */}
-        <main className="bg-[#050a1d]/40 rounded-3xl border border-slate-800/80 p-5 md:p-6 backdrop-blur-md shadow-2xl relative">
+        <main className="bg-[#050a1d]/40 rounded-3xl border border-slate-800/80 p-4 sm:p-5 md:p-6 backdrop-blur-md shadow-2xl relative">
           <AnimatePresence mode="wait">
             
             {/* TAB #1: My Card */}
@@ -695,37 +695,37 @@ export default function App() {
         </main>
 
         {/* Footer Navigation Tabs */}
-        <footer className="flex justify-center pt-2 mt-1">
-          <nav className="flex items-center bg-[#050a1d]/85 p-1.5 rounded-2xl border border-slate-800/80 flex-wrap justify-center shadow-xl">
+        <footer className="flex justify-center pt-2 mt-1 w-full">
+          <nav className="flex items-center bg-[#050a1d]/85 p-1 rounded-2xl border border-slate-800/80 justify-center shadow-xl w-full max-w-full">
             <button
               onClick={() => {
                 setActiveTab('card');
                 setScannedResult(null);
               }}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                 activeTab === 'card' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <IdCard size={14} />
-              <span>My Card</span>
+              <IdCard size={14} className="flex-shrink-0" />
+              <span className="truncate">My Card</span>
             </button>
             <button
               onClick={() => setActiveTab('scan')}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                 activeTab === 'scan' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Scan size={14} />
-              <span>Scan</span>
+              <Scan size={14} className="flex-shrink-0" />
+              <span className="truncate">Scan</span>
             </button>
             <button
               onClick={() => setActiveTab('contacts')}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer relative ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-semibold tracking-wide transition-all cursor-pointer relative ${
                 activeTab === 'contacts' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Users size={14} />
-              <span>Others</span>
+              <Users size={14} className="flex-shrink-0" />
+              <span className="truncate">Others</span>
               {contacts.length > 0 && (
                 <span className="inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full text-[9px] font-extrabold bg-[#4f46e5] border border-slate-900 text-white leading-none ml-1">
                   {contacts.length}
@@ -734,12 +734,12 @@ export default function App() {
             </button>
             <button
               onClick={() => setActiveTab('profile')}
-              className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1 sm:gap-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2.5 rounded-xl text-[10px] sm:text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                 activeTab === 'profile' ? 'bg-[#4f46e5] text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
-              <Settings size={14} />
-              <span>Profile</span>
+              <Settings size={14} className="flex-shrink-0" />
+              <span className="truncate">Profile</span>
             </button>
           </nav>
         </footer>

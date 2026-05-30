@@ -1,6 +1,6 @@
 {
   "name": "CardWallet",
   "description": "An interactive mobile business card wallet. Share your card via QR, customize design themes, scan other cards via camera, and manage contacts.",
-  "requestFramePermissions": ["camera"],
+  "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

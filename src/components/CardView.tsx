@@ -12,19 +12,18 @@ interface CardViewProps {
 
 export function CardView({ contact, palette, showQr = true }: CardViewProps) {
   const vcardText = getVcard(contact);
-  const [qrWidth, setQrWidth] = useState(130);
+  const [qrWidth, setQrWidth] = useState(240);
 
   useEffect(() => {
     const handleResize = () => {
-      // Dynamic adapt QR Code width matching viewport width.
-      // On narrow android screens (< 380px or < 430px), we scale compact QR dimensions
-      // so contact text labels have maximum space to stretch.
+      // Since the QR Code is positioned below the contact list, it has more horizontal room.
+      // Scaling it larger creates a modern badge-style digital business card.
       if (window.innerWidth < 380) {
-        setQrWidth(95);
+        setQrWidth(190);
       } else if (window.innerWidth < 430) {
-        setQrWidth(120);
+        setQrWidth(230);
       } else {
-        setQrWidth(160);
+        setQrWidth(270);
       }
     };
 
@@ -37,60 +36,60 @@ export function CardView({ contact, palette, showQr = true }: CardViewProps) {
 
   return (
     <div
-      className="w-full rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform border border-transparent min-h-[180px]"
+      className="w-full rounded-2xl overflow-hidden shadow-lg transition-all duration-300 transform border border-transparent min-h-[300px]"
       style={{
         backgroundColor: palette.bg,
         color: palette.text,
       }}
     >
-      {/* Container holding details and QR side-by-side */}
-      <div className="p-4 sm:p-6 flex flex-row items-center justify-between gap-3 sm:gap-6">
-        {/* Left column: Contact details */}
-        <div className="flex-1 flex flex-col justify-between gap-3 sm:gap-4 min-w-0">
-          <div>
-            <h3 className="font-sans text-base sm:text-xl font-bold tracking-tight text-current select-all truncate">
+      {/* Container holding details at the top, and QR code centered below */}
+      <div className="p-5 sm:p-6 flex flex-col items-center gap-5">
+        {/* Top: Contact details (full width) */}
+        <div className="w-full flex flex-col gap-3.5 min-w-0 text-left">
+          <div className="border-b border-white/10 pb-3">
+            <h3 className="font-sans text-lg sm:text-2xl font-bold tracking-tight text-current select-all truncate">
               {contact.name || 'Anonymous'}
             </h3>
-            <p className="font-sans text-[10px] sm:text-xs opacity-75 mt-0.5 tracking-wide select-all truncate">
+            <p className="font-sans text-xs sm:text-sm font-medium opacity-85 mt-1 tracking-wide select-all truncate">
               {contact.title || 'No Title'}
             </p>
           </div>
 
-          <div className="space-y-1 sm:space-y-1.5">
+          <div className="space-y-2 pt-1">
             {contact.company && (
-              <p className="font-sans text-[9px] sm:text-xs font-semibold uppercase tracking-wider opacity-90 select-all mb-0.5 flex items-center gap-1 sm:gap-1.5 truncate">
-                <Award size={12} className="opacity-80 flex-shrink-0" />
+              <p className="font-sans text-xs sm:text-sm font-semibold uppercase tracking-wider opacity-90 select-all flex items-center gap-2 truncate">
+                <Award size={14} className="opacity-80 flex-shrink-0" />
                 <span>{contact.company}</span>
               </p>
             )}
 
             {contact.email && (
-              <div className="flex items-center gap-1 sm:gap-2 text-current text-[10px] sm:text-xs select-all min-w-0">
-                <Mail size={11} className="opacity-80 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-current text-xs sm:text-sm select-all min-w-0">
+                <Mail size={13} className="opacity-80 flex-shrink-0" />
                 <span className="truncate">{contact.email}</span>
               </div>
             )}
 
             {contact.phone && (
-              <div className="flex items-center gap-1 sm:gap-2 text-current text-[10px] sm:text-xs select-all min-w-0">
-                <Phone size={11} className="opacity-80 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-current text-xs sm:text-sm select-all min-w-0">
+                <Phone size={13} className="opacity-80 flex-shrink-0" />
                 <span className="truncate">{contact.phone}</span>
               </div>
             )}
 
             {contact.web && (
-              <div className="flex items-center gap-1 sm:gap-2 text-current text-[10px] sm:text-xs select-all min-w-0">
-                <Globe size={11} className="opacity-80 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-current text-xs sm:text-sm select-all min-w-0">
+                <Globe size={13} className="opacity-80 flex-shrink-0" />
                 <span className="truncate">{contact.web}</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Right column: QR Code */}
+        {/* Bottom: QR Code */}
         {showQr && (
-          <div className="flex-shrink-0 flex items-center justify-center">
-            <div className="bg-white/5 p-1 sm:p-1.5 rounded-xl shadow-inner transition-all duration-350">
+          <div className="flex-shrink-0 flex flex-col items-center justify-center w-full mt-1">
+            <div className="bg-white/10 p-2 sm:p-2.5 rounded-2xl shadow-inner border border-white/10 transition-all duration-350">
               <QrCodeCanvas
                 text={vcardText}
                 width={qrWidth}
@@ -98,6 +97,9 @@ export function CardView({ contact, palette, showQr = true }: CardViewProps) {
                 bgColor={palette.bg}
               />
             </div>
+            <p className="text-[10px] sm:text-xs opacity-60 font-sans tracking-wide mt-2 font-medium">
+              Scan dynamic badge
+            </p>
           </div>
         )}
       </div>
